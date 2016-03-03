@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topic.fj.api.dao.TestDao">
+    <insert id="insert">
+        INSERT INTO tb_test
+        (
+        tid,
+        tname
+        )
+        VALUES
+        (
+        #{tid},
+        #{tname}
+        )
+    </insert>
+    <select id="findAll" resultType="com.topic.fj.api.model.Test">
+        SELECT *
+        FROM tb_test
+        ORDER BY tid DESC
+    </select>
+    <select id="findById" resultType="com.topic.fj.api.model.Test">
+        SELECT *
+        FROM tb_test
+        WHERE tid = ${tid}
+    </select>
+</mapper>

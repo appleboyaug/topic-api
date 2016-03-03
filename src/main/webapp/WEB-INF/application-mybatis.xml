@@ -1,0 +1,46 @@
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 数据库数据连接配置 -->
+    <!--
+    <bean id="DataSource_CMS" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${CONFIG.MYSQL.CONNECTION.DRIVER.NAME}"></property>
+        <property name="url" value="${CONFIG.MYSQL.CMS.CONNECTION.URL}"></property>
+        <property name="username" value="${CONFIG.MYSQL.CMS.CONNECTION.USER}"></property>
+        <property name="password" value="${CONFIG.MYSQL.CMS.CONNECTION.AUTH}"></property>
+    </bean>
+     -->
+    <bean id="DataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="com.mysql.jdbc.Driver"></property>
+        <property name="url" value="jdbc:mysql://localhost:3306/topic_db?useUnicode=true"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="123"></property>
+    </bean>
+
+    <!-- 数据库事务管理配置 -->
+    <bean id="TransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="DataSource" />
+    </bean>
+
+    <!-- 数据库持久化配置-->
+    <bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="DataSource" />
+        <property name="mapperLocations" value="classpath*:com/topic/fj/api/mapping/*.xml"></property>
+    </bean>
+
+    <!-- MyBatis：组件扫描配置-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.topic.fj.api.dao" />
+        <property name="sqlSessionFactoryBeanName" value="SqlSessionFactory"></property>
+    </bean>
+
+    <!-- MyBatis：事务管理配置 -->
+    <tx:annotation-driven transaction-manager="TransactionManager" />
+
+</beans>
